@@ -56,5 +56,5 @@ npm start
 
 ---
 
-**Автор:** [Ваше Имя]  
+**Автор:** Nik Dikanev @dikanevn  
 **Лицензия:** MIT
