@@ -1,0 +1,9 @@
+[
+  {
+    "poolId": "B3pbwEhY2LNSfqLGBLzUVBqfQ9fXgsZW3CoQYzAiRWoS",
+    "configType": "2fGXL8uhqxJ4tpgtosHZXT4zcQap6j62z3bMDxdkMvy5",
+    "baseReserve": "26850343577",
+    "quoteReserve": "665590234820712687",
+    "tradeFeeRate": "20000"
+  }
+]
