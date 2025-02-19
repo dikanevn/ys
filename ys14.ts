@@ -176,7 +176,28 @@ async function main() {
         await sleep(1000);
       }
       // Задаем процент от баланса для свапа (например, 50 означает 50% от баланса)
-      const SELL_PERCENTAGE = 10; // Измените это значение, чтобы продать нужный процент
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+      const SELL_PERCENTAGE = 1; // Измените это значение, чтобы продать нужный процент
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
       const sellAmount = tokenABalanceRaw.mul(new BN(SELL_PERCENTAGE)).div(new BN(100)); // Продаём SELL_PERCENTAGE% от баланса
       console.log(`количество токенов для свопа (${SELL_PERCENTAGE}%):`, sellAmount.toString());
 
@@ -201,7 +222,7 @@ async function main() {
         poolInfo: sortedPoolData.poolInfo,
         poolKeys: sortedPoolData.poolKeys,
         inputAmount: sellAmount,
-        slippage: 0.20, // % допустимой просадки
+        slippage: 0.50, // % допустимой просадки
         baseIn,
         ownerInfo: { useSOLBalance: true },
         txVersion,
@@ -209,7 +230,7 @@ async function main() {
         // Добавлено для Jito: передача чаевых валидаторам через txTipConfig
         txTipConfig: {
           address: new PublicKey('96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5'),
-          amount: new BN(100000), // 100000 = 0.0001 SOL в лампортах
+          amount: new BN(1000000), // 1000000 = 0.001 SOL в лампортах
         }
       };
 
