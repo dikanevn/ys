@@ -208,29 +208,72 @@ async function main() {
         process.exit(1);
       }
       
-      // Ждем появления средств
+      // Ждем появления средств и достаточной ликвидности
       const swapBalanceStartTime = Date.now();
       let tokenABalanceRaw: BN;
+      let poolData: any;
+      
       while (true) {
+        // Проверяем баланс токена
         const balanceInfo = await raydium.connection.getTokenAccountBalance(tokenAAccount);
         tokenABalanceRaw = new BN(balanceInfo.value.amount);
-        if (!tokenABalanceRaw.isZero()) {
-          break;
+
+        // Проверяем актуальную ликвидность пула
+        try {
+          poolData = await raydium.cpmm.getPoolInfoFromRpc(bestPool.poolId);
+          const currentBaseReserve = new BN(poolData.rpcData.baseReserve);
+          const currentQuoteReserve = new BN(poolData.rpcData.quoteReserve);
+          
+          console.log("Текущая ликвидность пула:", {
+            baseReserve: currentBaseReserve.toString(),
+            quoteReserve: currentQuoteReserve.toString()
+          });
+
+          // Проверяем что есть и баланс и достаточная ликвидность
+          // Ликвидность должна быть минимум в 3 раза больше суммы свапа
+          const SELL_PERCENTAGE = 75;
+          const potentialSellAmount = tokenABalanceRaw.mul(new BN(SELL_PERCENTAGE)).div(new BN(100));
+          
+          if (!tokenABalanceRaw.isZero() && 
+              currentBaseReserve.gt(potentialSellAmount.muln(3)) && 
+              currentQuoteReserve.gt(potentialSellAmount.muln(3))) {
+            console.log("Найдена достаточная ликвидность в пуле");
+            bestPool.data = poolData; // Обновляем данные пула
+            break;
+          }
+        } catch (e) {
+          console.log("Ошибка при проверке ликвидности пула:", e);
         }
+
         if (Date.now() - swapBalanceStartTime >= 3600 * 1000) {
-          console.error("Истекло время ожидания пополнения средств (1 час)");
+          console.error("Истекло время ожидания пополнения средств или ликвидности (1 час)");
           process.exit(0);
         }
-        console.log("Недостаточно средств для свопа. Повтор через 1 секунду...");
+        console.log("Ожидание средств или достаточной ликвидности. Повтор через 1 секунду...");
         await sleep(1000);
       }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       const SELL_PERCENTAGE = 75;
-	  
-	  
-	  
-	  
-	  
 	  
 	  
 	  
@@ -296,7 +339,25 @@ async function main() {
         poolInfo: bestPool.data.poolInfo,
         poolKeys: bestPool.data.poolKeys,
         inputAmount: sellAmount,
+		
+		
+		
+		
+		
+		
+		
+		
         slippage: 0.50, // % допустимой просадки
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
         baseIn,
         ownerInfo: { useSOLBalance: true },
         txVersion,
