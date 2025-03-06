@@ -1,2 +1,2 @@
-7YRkycGw98FdSzTJqRi8dNYEWcT4TwFwkeTKxZS87kyT
-https://raydium.io/swap/?inputMint=7YRkycGw98FdSzTJqRi8dNYEWcT4TwFwkeTKxZS87kyT&outputMint=sol
+B5QLZFRXxV5mA1oXugMHKwcitrgJHnhSDVvCgxYwaqgJ
+https://raydium.io/swap/?inputMint=B5QLZFRXxV5mA1oXugMHKwcitrgJHnhSDVvCgxYwaqgJ&outputMint=sol

@@ -171,7 +171,28 @@ async function main() {
   });
 
   console.log("Поиск всех пулов для пары токенов...");
-  const pools = await findAllPools(tokenAMint, tokenBMint, raydium);
+  
+  const poolSearchStartTime = Date.now();
+  let pools = [];
+  
+  while (true) {
+    if (Date.now() - poolSearchStartTime >= 3600 * 1000) {
+      console.error("Истекло время ожидания поиска пулов (1 час)");
+      process.exit(0);
+    }
+
+    pools = await findAllPools(tokenAMint, tokenBMint, raydium);
+    
+    if (pools.length > 0) {
+      console.log(`Найдено пулов: ${pools.length}`);
+      break;
+    }
+    
+    const remainingMs = 3600 * 1000 - (Date.now() - poolSearchStartTime);
+    const remainingSeconds = Math.floor(remainingMs / 1000);
+    console.log(`Пулы не найдены. Осталось ${remainingSeconds} секунд. Повтор через секунду...`);
+    await sleep(1000);
+  }
 
   // Сохраняем информацию о пулах
   const poolsInfo = pools.map(pool => ({
@@ -183,7 +204,6 @@ async function main() {
   }));
 
   fs.writeFileSync('pools.txt', JSON.stringify(poolsInfo, null, 2));
-  console.log(`Найдено пулов: ${pools.length}`);
 
   // Если нашли пулы, пробуем выполнить свап
   if (pools.length > 0) {
@@ -230,14 +250,14 @@ async function main() {
           });
 
           // Проверяем что есть и баланс и достаточная ликвидность
-          // Ликвидность должна быть минимум в 3 раза больше суммы свапа
+          // Изменяем проверку - теперь свап будет выполняться при любой положительной ликвидности
           const SELL_PERCENTAGE = 75;
           const potentialSellAmount = tokenABalanceRaw.mul(new BN(SELL_PERCENTAGE)).div(new BN(100));
           
           if (!tokenABalanceRaw.isZero() && 
-              currentBaseReserve.gt(potentialSellAmount.muln(3)) && 
-              currentQuoteReserve.gt(potentialSellAmount.muln(3))) {
-            console.log("Найдена достаточная ликвидность в пуле");
+              !currentBaseReserve.isZero() && 
+              !currentQuoteReserve.isZero()) {
+            console.log("Найдена ликвидность в пуле");
             bestPool.data = poolData; // Обновляем данные пула
             break;
           }
@@ -252,31 +272,85 @@ async function main() {
         console.log("Ожидание средств или достаточной ликвидности. Повтор через 1 секунду...");
         await sleep(1000);
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      const SELL_PERCENTAGE = 75;
+/*
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+*/
+      const SELL_PERCENTAGE = 51;
 	  
-	  
-	  
+	  /*
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+не удалять
+	  */
 	  
 	  
 	  
